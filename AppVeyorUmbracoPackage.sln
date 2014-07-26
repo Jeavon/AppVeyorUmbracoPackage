@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildPackage", "BuildPackage", "{7272912C-2100-48D1-A5D1-248C061CBAAA}"
 	ProjectSection(SolutionItems) = preProject
 		BuildPackage\Build.bat = BuildPackage\Build.bat
+		BuildPackage\Package.build.xml = BuildPackage\Package.build.xml
+		BuildPackage\package.nuspec = BuildPackage\package.nuspec
+		BuildPackage\Package.xml = BuildPackage\Package.xml
 	EndProjectSection
 EndProject
 Global
