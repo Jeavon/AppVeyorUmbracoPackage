@@ -22,7 +22,7 @@
   
   <!-- PROPERTIES -->
   <Choose>
-    <When Condition="$(APPVEYOR_BUILD_NUMBER) != '' And $(APPVEYOR_REPO_BRANCH ) != 'Release' ">
+    <When Condition="$(APPVEYOR_BUILD_NUMBER) != '' And $(APPVEYOR_REPO_BRANCH) != 'Release' ">
       <PropertyGroup>
         <VersionMajor>$(BaseVersionMajor)</VersionMajor>
         <VersionMinor>$(BaseVersionMinor)</VersionMinor>
