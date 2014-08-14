@@ -1,12 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{E08A60EB-5395-4772-9226-77242597B6E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildPackage", "BuildPackage", "{7272912C-2100-48D1-A5D1-248C061CBAAA}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
 		BuildPackage\Build.bat = BuildPackage\Build.bat
 		BuildPackage\Package.build.xml = BuildPackage\Package.build.xml
 		BuildPackage\package.nuspec = BuildPackage\package.nuspec
