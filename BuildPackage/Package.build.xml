@@ -40,6 +40,7 @@
 		<PackageDir>$(MSBuildProjectDirectory)\Package</PackageDir>
     <BuildNuGetDir>$(MSBuildProjectDirectory)\NugetBuild</BuildNuGetDir>
 		<CoreProjectDir>$(RootDir)\Test</CoreProjectDir>
+    <GruntProjectDir>$(RootDir)\Angular</GruntProjectDir>
 	</PropertyGroup>
 
 	<!-- TARGETS -->
@@ -77,11 +78,16 @@
 			<BinFiles Include="$(CoreProjectDir)\Bin\Debug\Test.dll" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\Package.xml" />
       <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
+      <GruntProjectFiles Include="$(GruntProjectDir)\dist\**\*" />
     </ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
     <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net45" />
     <Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
+    <Copy SourceFiles="@(GruntProjectFiles)"
+   DestinationFiles="@(GruntProjectFiles->'$(BuildDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(GruntProjectFiles)"
+   DestinationFiles="@(GruntProjectFiles->'$(BuildNuGetDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />    
   </Target>
 
 	<!-- MANIFEST -->
