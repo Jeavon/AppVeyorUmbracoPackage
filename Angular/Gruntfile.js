@@ -11,10 +11,15 @@ module.exports = function (grunt) {
   }
     
   grunt.initConfig({
+	buildVersion: grunt.option('buildversion') || '1',
     pkg: grunt.file.readJSON('package.json'),
     dest: grunt.option('target') || 'dist',
     basePath: 'App_Plugins/<%= pkg.name %>',
-
+	banner:
+        '/*! <%= pkg.title || pkg.name %> - v<%= buildVersion %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
+        ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;\n' +
+        ' * Licensed <%= pkg.license %>\n */\n',
     //Concat all the JS files into one
     concat: {
       dist: {
@@ -22,7 +27,10 @@ module.exports = function (grunt) {
           'app/scripts/**/*.js'
         ],
         dest: '<%= dest %>/<%= basePath %>/js/YouTube.js',
-        nonull: true
+        nonull: true,
+		options: {
+			banner: "<%= banner %>\n"
+		}
       }
     },
 
