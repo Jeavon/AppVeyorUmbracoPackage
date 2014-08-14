@@ -2,7 +2,7 @@
 version: 1.0.{build}
 
 # to run your custom scripts instead of automatic MSBuild
-build_script:
+install:
   - cmd: cd BuildPackage
   - cmd: Build.bat
 
