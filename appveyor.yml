@@ -1,0 +1,19 @@
+# version format
+version: 1.0.{build}
+
+# scripts that run after cloning repository
+install:
+  - cmd: cd BuildPackage
+  - cmd: Build.bat
+
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+  - cmd: cd BuildPackage
+  - cmd: Build.bat
+
+# to disable automatic builds
+build: off
+
+artifacts:
+  - path: BuildPackage\Package\*.nupkg
+  - path: BuildPackage\Package\*.zip
