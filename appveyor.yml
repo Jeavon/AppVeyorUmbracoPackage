@@ -2,8 +2,9 @@
 version: 1.0.0.{build}
 
 # UMBRACO_PACKAGE_SUFFIX will only be used for Release builds
+# example UMBRACO_PACKAGE_SUFFIX=beta
 install:
-  - cmd: set UMBRACO_PACKAGE_SUFFIX=-alpha
+  - cmd: set UMBRACO_PACKAGE_SUFFIX=alpha
   - cmd: cd BuildPackage
   - cmd: Build.bat
 

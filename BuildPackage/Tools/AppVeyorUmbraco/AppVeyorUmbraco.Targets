@@ -14,7 +14,7 @@
       <Code Type="Fragment" Language="cs">
 <![CDATA[
             var baseVersion = BuildVersion.Substring(0, BuildVersion.LastIndexOf('.'));
-			ProductVersion = baseVersion + BuildSuffix;
+			ProductVersion = baseVersion + "-" + BuildSuffix;
 //Log.LogError(OutputVer);
 ]]>
       </Code>
