@@ -1,8 +1,9 @@
 # version format
 version: 1.0.0.{build}
 
-# to run your custom scripts instead of automatic MSBuild
+# UMBRACO_PACKAGE_SUFFIX will only be used for Release builds
 install:
+  - cmd: set UMBRACO_PACKAGE_SUFFIX=-alpha
   - cmd: cd BuildPackage
   - cmd: Build.bat
 

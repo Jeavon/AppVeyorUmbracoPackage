@@ -6,32 +6,30 @@
 		<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
 		<MSBuildUmbracoTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildUmbracoTasks</MSBuildUmbracoTasksPath>
     <MSBuildNugetTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildNugetTasks</MSBuildNugetTasksPath>
+    <AppVeyorUmbracoPath>$(MSBuildProjectDirectory)\Tools\AppVeyorUmbraco</AppVeyorUmbracoPath>
 	</PropertyGroup>
 
 	<Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
 	<Import Project="$(MSBuildUmbracoTasksPath)\MSBuild.Umbraco.Tasks.Targets" />
   <Import Project="$(MSBuildNugetTasksPath)\MSBuild.NuGet.Tasks.Targets" />
+  <Import Project="$(AppVeyorUmbracoPath)\AppVeyorUmbraco.Targets" />
 
    <!-- PROPERTIES -->
-  <PropertyGroup>
-    <BasePackageVersion>1.2.2</BasePackageVersion>
-    <BaseVersionSuffix>-alpha</BaseVersionSuffix>
-    <BaseUmbracoVersion>7.1.5-nightly223</BaseUmbracoVersion>
+  <PropertyGroup >
+    <MinUmbracoVersion>7.1.5</MinUmbracoVersion>
+    <FileVersion>$(APPVEYOR_BUILD_VERSION)</FileVersion>
   </PropertyGroup>
+  
 
-  <Choose>
+  <Choose >
     <When Condition="$(APPVEYOR_BUILD_NUMBER) != '' And $(APPVEYOR_REPO_BRANCH) != 'Release' ">
       <PropertyGroup>
-        <PackageVersion>$(BasePackageVersion)-build$(APPVEYOR_BUILD_NUMBER)</PackageVersion>
-        <FileVersion>$(BasePackageVersion).$(APPVEYOR_BUILD_NUMBER)</FileVersion>
-        <MinUmbracoVersion>$(BaseMinUmbracoVersion)</MinUmbracoVersion>
+        <VersionSuffix>-build$(APPVEYOR_BUILD_NUMBER)</VersionSuffix>
       </PropertyGroup>
     </When>
     <Otherwise>
       <PropertyGroup>
-        <PackageVersion>$(BasePackageVersion)$(BaseVersionSuffix)</PackageVersion>
-        <FileVersion>$(BasePackageVersion).0</FileVersion>
-        <MinUmbracoVersion>$(BaseMinUmbracoVersion)</MinUmbracoVersion>
+        <VersionSuffix>$(UMBRACO_PACKAGE_SUFFIX)</VersionSuffix>
       </PropertyGroup>
     </Otherwise>
   </Choose>
@@ -46,8 +44,14 @@
 
 	<!-- TARGETS -->
 
+  <Target Name="GenProductVersion">
+    <GetProductVersion BuildVersion="$(APPVEYOR_BUILD_VERSION)" BuildSuffix="$(VersionSuffix)">
+      <Output TaskParameter="ProductVersion" PropertyName="ProductVersion"/>
+    </GetProductVersion>
+  </Target>
+  
 	<!-- CLEAN -->
-	<Target Name="Clean">
+	<Target Name="Clean" DependsOnTargets="GenProductVersion">
 		<RemoveDir Directories="$(BuildDir)" Condition="Exists('$(BuildDir)')" />
 		<RemoveDir Directories="$(PackageDir)" Condition="Exists('$(PackageDir)')" />
 		<MakeDir Directories="$(BuildDir)" />
@@ -59,7 +63,7 @@
   <Target Name="UpdateAssemblyInfo" DependsOnTargets="Clean">
     <FileUpdate Encoding="ASCII" Files="$(CoreProjectDir)\Properties\AssemblyInfo.cs" Regex="AssemblyVersion\(&quot;.*&quot;\)\]" ReplacementText="AssemblyVersion(&quot;$(FileVersion)&quot;)]" />
     <FileUpdate Encoding="ASCII" Files="$(CoreProjectDir)\Properties\AssemblyInfo.cs" Regex="AssemblyFileVersion\(&quot;.*&quot;\)\]" ReplacementText="AssemblyFileVersion(&quot;$(FileVersion)&quot;)]" />
-    <FileUpdate Encoding="ASCII" Files="$(CoreProjectDir)\Properties\AssemblyInfo.cs" Regex="AssemblyInformationalVersion\(&quot;.*&quot;\)\]" ReplacementText="AssemblyInformationalVersion(&quot;$(PackageVersion)&quot;)]" />
+    <FileUpdate Encoding="ASCII" Files="$(CoreProjectDir)\Properties\AssemblyInfo.cs" Regex="AssemblyInformationalVersion\(&quot;.*&quot;\)\]" ReplacementText="AssemblyInformationalVersion(&quot;$(ProductVersion)&quot;)]" />
   </Target>
 
 	<!-- COMPILE -->
@@ -87,8 +91,8 @@
 		</ItemGroup>
 		<ManifestUpdate ManifestFile="$(BuildDir)\package.xml"
 			WorkingDirectory="$(BuildDir)"
-			MinimumRequiredUmbracoVersion="$(BaseUmbracoVersion)"
-			PackageVersion="$(PackageVersion)"
+			MinimumRequiredUmbracoVersion="$(MinUmbracoVersion)"
+			PackageVersion="$(ProductVersion)"
 			Files="@(ManifestFiles)" />
 	</Target>
 
@@ -102,7 +106,7 @@
 				WorkingDirectory="$(BuildNuGetDir)"
         Title="$(ProjectName)"
         Description="@(Readme->'%(Identity)', '%0a%0d')"
-				Version="$(PackageVersion)"
+				Version="$(ProductVersion)"
 				Files="@(ManifestFiles)" />
   </Target>
 
@@ -119,7 +123,7 @@
     <MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\BuildPackage\Tools\NuGet.exe"
           ManifestFile="$(BuildNuGetDir)\package.nuspec"
           BasePath="$(BuildNuGetDir)"
-          Version="$(PackageVersion)"
+          Version="$(ProductVersion)"
           OutputDirectory="$(PackageDir)" />    
     
 		<RemoveDir Directories="$(BuildDir)" Condition="Exists('$(BuildDir)')" />
