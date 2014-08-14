@@ -3,7 +3,7 @@ ECHO APPVEYOR_BUILD_NUMBER : %APPVEYOR_BUILD_NUMBER%
 ECHO APPVEYOR_BUILD_VERSION : %APPVEYOR_BUILD_VERSION%
 cd ..\Angular\
 Call npm install
-Call grunt --buildversion 3.0.0
+Call grunt --buildversion %APPVEYOR_BUILD_VERSION%
 cd ..\BuildPackage\
 Call nuget.exe restore ..\AppVeyorUmbracoPackage.sln
 Call "C:\Program Files (x86)\MSBuild\12.0\Bin\MsBuild.exe" Package.build.xml
