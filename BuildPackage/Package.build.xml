@@ -16,7 +16,7 @@
 
    <!-- PROPERTIES -->
   <PropertyGroup >
-    <MinUmbracoVersion>7.1.5</MinUmbracoVersion>
+    <MinUmbracoVersion>$(UMBRACO_PACKAGE_MIN_VERSION)</MinUmbracoVersion>
     <FileVersion>$(APPVEYOR_BUILD_VERSION)</FileVersion>
   </PropertyGroup>
   
