@@ -8,10 +8,19 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildPackage", "BuildPackage", "{7272912C-2100-48D1-A5D1-248C061CBAAA}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		BuildPackage\Tools\AppVeyorUmbraco\AppVeyorUmbraco.Targets = BuildPackage\Tools\AppVeyorUmbraco\AppVeyorUmbraco.Targets
 		BuildPackage\Build.bat = BuildPackage\Build.bat
 		BuildPackage\Package.build.xml = BuildPackage\Package.build.xml
 		BuildPackage\package.nuspec = BuildPackage\package.nuspec
 		BuildPackage\Package.xml = BuildPackage\Package.xml
+		BuildPackage\Test.bat = BuildPackage\Test.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Angular", "Angular", "{7C05A5A7-729A-4693-ADB7-1525A61554AA}"
+	ProjectSection(SolutionItems) = preProject
+		Angular\Gruntfile.js = Angular\Gruntfile.js
+		Angular\package.json = Angular\package.json
+		Angular\config\package.manifest = Angular\config\package.manifest
 	EndProjectSection
 EndProject
 Global
