@@ -21,8 +21,8 @@ module.exports = function (grunt) {
         var basePackageVer = buildVersion.substring(0, findPoint);
         var buildNumber = buildVersion.substring(findPoint + 1, buildVersion.length);
         if (buildBranch.toLowerCase() != 'release') {
-            return basePackageVer + "-" + packageSuffix + buildNumber;
-        } else if (packageSuffix != 'build') {
+            return basePackageVer + "-" + 'build' + buildNumber;
+        } else if (packageSuffix != 'build' && packageSuffix.length > 0) {
             return basePackageVer + "-" + packageSuffix;
         } else {
             return basePackageVer;
