@@ -6,6 +6,7 @@ module.exports = function (grunt) {
   //cant load this with require
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-banner');
 
   if (grunt.option('target') && !grunt.file.isDir(grunt.option('target'))) {
     grunt.fail.warn('The --target option specified is not a valid directory');
@@ -32,10 +33,10 @@ module.exports = function (grunt) {
     dest: grunt.option('target') || 'dist',
     basePath: 'App_Plugins/<%= pkg.name %>',
 	banner:
-        '/*! <%= pkg.title || pkg.name %> - v<%= packageVersion() %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        '*! <%= pkg.title || pkg.name %> - v<%= packageVersion() %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
         '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
         ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;\n' +
-        ' * Licensed <%= pkg.license %>\n */\n',
+        ' * Licensed <%= pkg.license %>\n *',
     //Concat all the JS files into one
     concat: {
       dist: {
@@ -45,7 +46,7 @@ module.exports = function (grunt) {
         dest: '<%= dest %>/<%= basePath %>/js/YouTube.js',
         nonull: true,
 		options: {
-			banner: "<%= banner %>\n"
+			banner: "/<%= banner %>/\n\n"
 		}
       }
     },
@@ -65,10 +66,22 @@ module.exports = function (grunt) {
     cssmin: {
         add_banner: {
             options: {
-                banner: "<%= banner %>"
+                banner: "/<%= banner %>/\n"
             },
             files: {
                 '<%= dest %>/<%= basePath %>/css/YouTube.css': ['<%= dest %>/<%= basePath %>/css/YouTube.css']
+            }
+        }
+    },
+
+    usebanner: {
+        taskName: {
+            options: {
+                position: 'top',
+                banner: '<!--\n <%= banner %> -->\n',
+            },
+            files: {
+                src: [ '<%= dest %>/<%= basePath %>/views/**/*.html' ]
             }
         }
     },
@@ -231,7 +244,7 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('default', ['jshint', 'concat', 'less', 'cssmin', 'copy:config', 'copy:views']);
+  grunt.registerTask('default', ['jshint', 'concat', 'less', 'cssmin', 'copy:config', 'copy:views', 'usebanner']);
   grunt.registerTask('nuget', ['clean', 'default', 'copy:nuget', 'template:nuspec', 'mkdir:pkg', 'nugetpack']);
   grunt.registerTask('package', ['clean', 'default', 'copy:umbraco', 'copy:umbracoBin','mkdir:pkg', 'umbracoPackage']);
   
