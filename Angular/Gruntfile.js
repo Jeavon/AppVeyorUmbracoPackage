@@ -5,18 +5,34 @@ module.exports = function (grunt) {
 
   //cant load this with require
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
   if (grunt.option('target') && !grunt.file.isDir(grunt.option('target'))) {
     grunt.fail.warn('The --target option specified is not a valid directory');
   }
     
   grunt.initConfig({
-	buildVersion: grunt.option('buildversion') || '1',
+      packageVersion: function () {
+        var buildVersion = grunt.option('buildversion') || '1.0.0.1',
+            packageSuffix = grunt.option('packagesuffix') || 'build',
+            buildBranch = grunt.option('buildbranch') || 'master';
+
+        var findPoint = buildVersion.lastIndexOf(".");
+        var basePackageVer = buildVersion.substring(0, findPoint);
+        var buildNumber = buildVersion.substring(findPoint + 1, buildVersion.length);
+        if (buildBranch.toLowerCase() != 'release') {
+            return basePackageVer + "-" + packageSuffix + buildNumber;
+        } else if (packageSuffix != 'build') {
+            return basePackageVer + "-" + packageSuffix;
+        } else {
+            return basePackageVer;
+        }
+    },
     pkg: grunt.file.readJSON('package.json'),
     dest: grunt.option('target') || 'dist',
     basePath: 'App_Plugins/<%= pkg.name %>',
 	banner:
-        '/*! <%= pkg.title || pkg.name %> - v<%= buildVersion %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        '/*! <%= pkg.title || pkg.name %> - v<%= packageVersion() %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
         '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
         ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;\n' +
         ' * Licensed <%= pkg.license %>\n */\n',
@@ -38,12 +54,23 @@ module.exports = function (grunt) {
     less: {
       dist: {
         options: {
-          paths: ['app/styles'],
+            paths: ['app/styles'],
         },
         files: {
           '<%= dest %>/<%= basePath %>/css/YouTube.css': 'app/styles/YouTube.less',
-        }
+        },
       }
+    },
+
+    cssmin: {
+        add_banner: {
+            options: {
+                banner: "<%= banner %>"
+            },
+            files: {
+                '<%= dest %>/<%= basePath %>/css/YouTube.css': ['<%= dest %>/<%= basePath %>/css/YouTube.css']
+            }
+        }
     },
 
     watch: {
@@ -204,7 +231,7 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('default', ['jshint', 'concat', 'less', 'copy:config', 'copy:views']);
+  grunt.registerTask('default', ['jshint', 'concat', 'less', 'cssmin', 'copy:config', 'copy:views']);
   grunt.registerTask('nuget', ['clean', 'default', 'copy:nuget', 'template:nuspec', 'mkdir:pkg', 'nugetpack']);
   grunt.registerTask('package', ['clean', 'default', 'copy:umbraco', 'copy:umbracoBin','mkdir:pkg', 'umbracoPackage']);
   

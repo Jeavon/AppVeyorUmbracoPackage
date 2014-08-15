@@ -29,7 +29,7 @@
     </When>
     <Otherwise>
       <PropertyGroup>
-        <VersionSuffix>$(UMBRACO_PACKAGE_SUFFIX)</VersionSuffix>
+        <VersionSuffix>$(UMBRACO_PACKAGE_PRERELEASE_SUFFIX)</VersionSuffix>
       </PropertyGroup>
     </Otherwise>
   </Choose>
