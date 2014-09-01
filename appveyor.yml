@@ -25,5 +25,12 @@ artifacts:
     artifact: /.*\.nupkg/
 	on:
       branch: master
+	  
+deploy:
+  - provider: NuGet
+    server: https://www.myget.org/F/youtube-umbraco/
+    api_key:
+      secure: SASQGWG/4zNns7bwSSsJ5RPvKcKfJsBeEPuw69wsVPA3PO739QmzVtc5VwQwgvbr
+    artifact: /.*\.nupkg/
 	on:
-      branch: release	  
+      branch: release
