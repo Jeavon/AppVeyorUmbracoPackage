@@ -1,12 +1,12 @@
 # version format
-version: 1.0.1.{build}
+version: 1.0.2.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX will only be used for Release builds
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=-beta (hyphen must be included)
 install:
   - cmd: npm install -g grunt-cli
-  - cmd: set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
-  - cmd: set UMBRACO_PACKAGE_MIN_VERSION=7.1.5
+  - cmd: set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=
+  - cmd: set UMBRACO_PACKAGE_MIN_VERSION=7.1.4
   - cmd: cd BuildPackage
   - cmd: Build.bat
 
@@ -16,3 +16,13 @@ build: off
 artifacts:
   - path: BuildPackage\Package\*.nupkg
   - path: BuildPackage\Package\*.zip
+  
+ deploy:
+  - provider: NuGet
+    server: https://www.myget.org/F/youtube-umbraco/
+    api_key:
+      secure: SASQGWG/4zNns7bwSSsJ5RPvKcKfJsBeEPuw69wsVPA3PO739QmzVtc5VwQwgvbr
+    artifact: /.*\.nupkg/
+	on:
+      branch: master
+      branch: release	  
