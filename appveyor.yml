@@ -26,7 +26,6 @@ deploy:
     on:
       branch: master
 
-deploy:
   - provider: NuGet
     server: https://www.myget.org/F/youtube-umbraco/
     api_key:
