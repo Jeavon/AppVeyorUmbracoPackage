@@ -25,4 +25,5 @@ artifacts:
     artifact: /.*\.nupkg/
 	on:
       branch: master
+	on:
       branch: release	  
