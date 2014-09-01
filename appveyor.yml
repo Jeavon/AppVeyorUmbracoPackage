@@ -16,8 +16,8 @@ build: off
 artifacts:
   - path: BuildPackage\Package\*.nupkg
   - path: BuildPackage\Package\*.zip
-  
- deploy:
+
+deploy:
   - provider: NuGet
     server: https://www.myget.org/F/youtube-umbraco/
     api_key:
