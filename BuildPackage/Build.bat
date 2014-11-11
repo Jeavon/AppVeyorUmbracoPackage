@@ -6,4 +6,4 @@ Call npm install
 Call grunt --buildversion %APPVEYOR_BUILD_VERSION% --buildbranch %APPVEYOR_REPO_BRANCH% --packagesuffix %UMBRACO_PACKAGE_PRERELEASE_SUFFIX%
 cd ..\BuildPackage\
 Call Tools\nuget.exe restore ..\AppVeyorUmbracoPackage.sln
-Call "C:\Program Files (x86)\MSBuild\12.0\Bin\MsBuild.exe" Package.build.xml
+Call "%programfiles(x86)%\MSBuild\12.0\Bin\MsBuild.exe" Package.build.xml

@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildPackage", "BuildPackag
 		appveyor.yml = appveyor.yml
 		BuildPackage\Tools\AppVeyorUmbraco\AppVeyorUmbraco.Targets = BuildPackage\Tools\AppVeyorUmbraco\AppVeyorUmbraco.Targets
 		BuildPackage\Build.bat = BuildPackage\Build.bat
+		NuGet.Config = NuGet.Config
 		BuildPackage\Package.build.xml = BuildPackage\Package.build.xml
 		BuildPackage\package.nuspec = BuildPackage\package.nuspec
 		BuildPackage\Package.xml = BuildPackage\Package.xml
