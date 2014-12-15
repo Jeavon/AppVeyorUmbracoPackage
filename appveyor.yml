@@ -2,7 +2,7 @@
 version: 1.0.2.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX will only be used for Release builds
-# example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=-beta (hyphen must be included)
+# example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
 install:
   - cmd: npm install -g grunt-cli
   - cmd: set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
