@@ -3,20 +3,20 @@
     <metadata>
         <id>AppVeyorUmbracoPackage</id>
         <version>0.0.0</version>
-        <title>AppVeyorUmbracoPackage</title>
+        <title></title>
         <authors>The Umbraco Community</authors>
         <owners>The Umbraco Community</owners>
         <projectUrl>https://github.com/Jeavon/AppVeyorUmbracoPackage</projectUrl>
         <iconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>AppVeyorUmbracoPackage</description>
-        <summary>AppVeyorUmbracoPackage</summary>
+        <description></description>
+        <summary></summary>
         <copyright>The Umbraco Community</copyright>
         <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
         <language>en-GB</language>
         <tags>umbraco</tags>
         <dependencies>
-            <dependency id="UmbracoCms.Core" version="7.1.5" />
+            <dependency id="UmbracoCms.Core" version="0.0.0" />
         </dependencies>
     </metadata>    
 </package>
