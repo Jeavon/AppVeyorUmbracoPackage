@@ -28,7 +28,7 @@
 
   <!-- NUGET ONLY PROPERTIES -->
   <PropertyGroup>
-    <PackageId>Our.Umbraco.Ditto</PackageId>
+    <PackageId>AppVeyorUmbracoPackage</PackageId>
     <Copyright>The Umbraco Community</Copyright>
     <Owners>The Umbraco Community</Owners>
     <IconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters.png</IconUrl>
