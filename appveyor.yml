@@ -12,8 +12,6 @@ install:
 # to disable automatic builds
 build: off
 
-skip_tags: true
-
 artifacts:
   - path: BuildPackage\Package\*.nupkg
   - path: BuildPackage\Package\*.zip
@@ -36,7 +34,6 @@ deploy:
     draft: false
     prerelease: false
     on:
-      branch: master                 # release from master branch only
       appveyor_repo_tag: true        # deploy on tag push only
 
      # NuGet Deployment for releases
