@@ -1,5 +1,5 @@
 # version format
-version: 1.0.3.{build}
+version: 1.0.4.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX will only be used for Release builds
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
@@ -11,6 +11,8 @@ install:
 
 # to disable automatic builds
 build: off
+
+skip_tags: true
 
 artifacts:
   - path: BuildPackage\Package\*.nupkg
