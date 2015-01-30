@@ -6,7 +6,6 @@ version: 1.0.2.{build}
 install:
   - cmd: npm install -g grunt-cli
   - cmd: set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
-  - cmd: set UMBRACO_PACKAGE_MIN_VERSION=7.1.4
   - cmd: cd BuildPackage
   - cmd: Build.bat
 
@@ -33,3 +32,33 @@ deploy:
     artifact: /.*\.nupkg/
     on:
       branch: release
+
+deploy:
+     # MyGet Deployment for builds & releases
+  - provider: NuGet
+    server: https://www.myget.org/F/appveyorumbracopackage/
+    api_key:
+      secure: SASQGWG/4zNns7bwSSsJ5RPvKcKfJsBeEPuw69wsVPA3PO739QmzVtc5VwQwgvbr
+    artifact: /.*\.nupkg/
+    on:
+      branch: master
+
+     # NuGet Deployment for releases
+#  - provider: NuGet
+#    server: 
+#    api_key:
+#      secure: 
+#    artifact: /.*\.nupkg/
+#    on:
+#      branch: master
+#      appveyor_repo_tag: true 
+
+  - provider: GitHub
+  auth_token:
+     secure: c0LwOGqoFZIieyy8CHrUtYQOD0HL0rG5tV2DS+8FHv34BKs/LSGGtmWWep5O7GbV
+  artifact: /.*\.zip/            # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only

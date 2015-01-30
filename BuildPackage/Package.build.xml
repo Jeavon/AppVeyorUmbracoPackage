@@ -14,21 +14,32 @@
   <Import Project="$(MSBuildNugetTasksPath)\MSBuild.NuGet.Tasks.Targets" />
   <Import Project="$(AppVeyorUmbracoPath)\AppVeyorUmbraco.Targets" />
 
-   <!-- PROPERTIES -->
+  <!-- SHARED PROPERTIES -->
   <PropertyGroup>
     <PackageName>AppVeyorUmbracoPackage</PackageName>
-    <Readme>AppVeyorUmbracoPackage</Readme>
-    <Summary>AppVeyorUmbracoPackage</Summary>
+    <MinUmbracoVersion>7.1.5</MinUmbracoVersion>
+    <Readme>Soemthing fun for Umbraco</Readme>
+    <AuthorName>The Umbraco Community</AuthorName>
+    <AuthorUrl>http://our.umbraco.org</AuthorUrl>
+    <PackageLicenseName>MIT license</PackageLicenseName>
+    <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
+    <ProjectUrl>https://github.com/Jeavon/AppVeyorUmbracoPackage</ProjectUrl>
   </PropertyGroup>
-  
-  <PropertyGroup >
-    <MinUmbracoVersion>$(UMBRACO_PACKAGE_MIN_VERSION)</MinUmbracoVersion>
+
+  <!-- NUGET ONLY PROPERTIES -->
+  <PropertyGroup>
+    <PackageId>Our.Umbraco.Ditto</PackageId>
+    <Copyright>The Umbraco Community</Copyright>
+    <Owners>The Umbraco Community</Owners>
+    <IconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters.png</IconUrl>
+  </PropertyGroup>
+
+  <!-- APPVEYOR PROPERTIES -->
+  <PropertyGroup>
     <FileVersion>$(APPVEYOR_BUILD_VERSION)</FileVersion>
   </PropertyGroup>
-  
-
-  <Choose >
-    <When Condition="$(APPVEYOR_BUILD_NUMBER) != '' And $(APPVEYOR_REPO_BRANCH) != 'Release' ">
+  <Choose>
+    <When Condition="$(APPVEYOR_BUILD_NUMBER) != '' And $(APPVEYOR_REPO_TAG) != 'true' ">
       <PropertyGroup>
         <VersionSuffix>build$(APPVEYOR_BUILD_NUMBER)</VersionSuffix>
       </PropertyGroup>
@@ -39,7 +50,8 @@
       </PropertyGroup>
     </Otherwise>
   </Choose>
-
+  
+  <!-- PATHS -->
 	<PropertyGroup>
 		<RootDir>$(MSBuildProjectDirectory)\..</RootDir>
 		<BuildDir>$(MSBuildProjectDirectory)\Build</BuildDir>
@@ -50,7 +62,6 @@
 	</PropertyGroup>
 
 	<!-- TARGETS -->
-
   <Target Name="GenProductVersion">
     <GetProductVersion BuildVersion="$(APPVEYOR_BUILD_VERSION)" BuildSuffix="$(VersionSuffix)">
       <Output TaskParameter="ProductVersion" PropertyName="ProductVersion"/>
@@ -96,7 +107,7 @@
    DestinationFiles="@(GruntProjectFiles->'$(BuildNuGetDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />    
   </Target>
 
-	<!-- MANIFEST -->
+  <!-- MANIFEST UMBRACO -->
   <Target Name="ManifestUmbraco" DependsOnTargets="PrepairFiles">
     <ItemGroup>
       <ManifestFiles Include="$(BuildDir)\**\*" Exclude="$(BuildDir)\Package.xml" />
@@ -106,7 +117,12 @@
 			MinimumRequiredUmbracoVersion="$(MinUmbracoVersion)"
       PackageName="$(PackageName)"
 			PackageVersion="$(ProductVersion)"
+      AuthorName="$(AuthorName)"
+      AuthorUrl="$(AuthorUrl)"
       Readme="$(Readme)"
+      PackageLicenseName="$(PackageLicenseName)"
+      PackageLicenseUrl="$(PackageLicenseUrl)"
+      PackageUrl="$(ProjectUrl)"
 			Files="@(ManifestFiles)" />
   </Target>
 
@@ -120,18 +136,26 @@
 				WorkingDirectory="$(BuildNuGetDir)"
         Title="$(PackageName)"
         Description="$(Readme)"
-        Summary="$(Summary)"
+        Summary="$(Readme)"
 				Version="$(ProductVersion)"
-        MinimumRequiredUmbracoVersion = "$(MinUmbracoVersion)"
+        MinimumRequiredUmbracoVersion ="$(MinUmbracoVersion)"
+        Authors="$(AuthorName)"
+        Owners="$(Owners)"
+        Copyright="$(Copyright)"
+        LicenseUrl="$(PackageLicenseUrl)"
+        ProjectUrl="$(ProjectUrl)"
+        Id="$(PackageId)"
+        IconUrl="$(IconUrl)"
 				Files="@(ManifestFiles)" />
   </Target>
 
   <!-- PACKAGE -->
   <Target Name="Package" DependsOnTargets="ManifestUmbraco; ManifestNuGet">
-		<ItemGroup>
-			<PackageFiles Include="$(BuildDir)\**\*.*" />
-		</ItemGroup>
-		<Package ManifestFile="$(BuildDir)\Package.xml"
+    <ItemGroup>
+      <PackageFiles Include="$(BuildDir)\**\*.*" />
+    </ItemGroup>
+
+    <Package ManifestFile="$(BuildDir)\Package.xml"
 			WorkingDirectory="$(BuildDir)"
 			OutputDirectory="$(PackageDir)"
 			Files="@(PackageFiles)" />
@@ -140,9 +164,9 @@
           ManifestFile="$(BuildNuGetDir)\package.nuspec"
           BasePath="$(BuildNuGetDir)"
           Version="$(ProductVersion)"
-          OutputDirectory="$(PackageDir)" />    
-    
-		<RemoveDir Directories="$(BuildDir)" Condition="Exists('$(BuildDir)')" />
+          OutputDirectory="$(PackageDir)" />
+
+    <RemoveDir Directories="$(BuildDir)" Condition="Exists('$(BuildDir)')" />
     <RemoveDir Directories="$(BuildNuGetDir)" Condition="Exists('$(BuildNuGetDir)')" />
 
   </Target>
