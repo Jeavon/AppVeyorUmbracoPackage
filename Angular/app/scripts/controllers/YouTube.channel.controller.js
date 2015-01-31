@@ -13,6 +13,7 @@ angular.module("umbraco").controller("YouTube.channel.controller", function ($sc
         }
     }
 
+	
     //Set Has Videos to false - until we get some back from API call
     $scope.hasVideos        = false;
     $scope.notFoundVideos   = false;
