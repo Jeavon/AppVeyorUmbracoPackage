@@ -1,5 +1,5 @@
 # version format
-version: 1.0.8.{build}
+version: 1.0.9.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX will only be used for Release builds
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
@@ -34,15 +34,16 @@ deploy:
     draft: false
     prerelease: false
     on:
+	  branch: master
       appveyor_repo_tag: true        # deploy on tag push only
 
      # NuGet Deployment for releases
-#  - provider: NuGet
-#    server: 
-#    api_key:
-#      secure: 
-#    artifact: /.*\.nupkg/
-#    on:
-#      branch: master
-#      appveyor_repo_tag: true 
+  - provider: NuGet
+    server: https://www.myget.org/F/appveyorumbracopackage/
+    api_key:
+      secure: SASQGWG/4zNns7bwSSsJ5RPvKcKfJsBeEPuw69wsVPA3PO739QmzVtc5VwQwgvbr
+    artifact: /.*\.nupkg/
+    on:
+      branch: master
+      appveyor_repo_tag: true 
 
