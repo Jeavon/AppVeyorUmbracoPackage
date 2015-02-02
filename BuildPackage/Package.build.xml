@@ -32,6 +32,9 @@
     <Copyright>The Umbraco Community</Copyright>
     <Owners>The Umbraco Community</Owners>
     <IconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters.png</IconUrl>
+    <Tags>umbraco</Tags>
+    <Language>en-GB</Language>
+    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
   </PropertyGroup>
 
   <!-- APPVEYOR PROPERTIES -->
@@ -146,6 +149,9 @@
         ProjectUrl="$(ProjectUrl)"
         Id="$(PackageId)"
         IconUrl="$(IconUrl)"
+        Language="$(Language)"
+        RequireLicenseAcceptance="$(RequireLicenseAcceptance)"
+        Tags="$(Tags)"
 				Files="@(ManifestFiles)" />
   </Target>
 
