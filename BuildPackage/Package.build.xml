@@ -56,8 +56,9 @@
   
   <!-- PATHS -->
 	<PropertyGroup>
+    <BuildConfig>Release</BuildConfig>
 		<RootDir>$(MSBuildProjectDirectory)\..</RootDir>
-		<BuildDir>$(MSBuildProjectDirectory)\Build</BuildDir>
+    <BuildUmbDir>$(MSBuildProjectDirectory)\Build</BuildUmbDir>
 		<PackageDir>$(MSBuildProjectDirectory)\Package</PackageDir>
     <BuildNuGetDir>$(MSBuildProjectDirectory)\NugetBuild</BuildNuGetDir>
 		<CoreProjectDir>$(RootDir)\Test</CoreProjectDir>
@@ -65,19 +66,20 @@
 	</PropertyGroup>
 
 	<!-- TARGETS -->
-  <Target Name="GenProductVersion">
+  <Target Name="GetProductVersion">
     <GetProductVersion BuildVersion="$(APPVEYOR_BUILD_VERSION)" BuildSuffix="$(VersionSuffix)">
       <Output TaskParameter="ProductVersion" PropertyName="ProductVersion"/>
     </GetProductVersion>
   </Target>
   
 	<!-- CLEAN -->
-	<Target Name="Clean" DependsOnTargets="GenProductVersion">
-		<RemoveDir Directories="$(BuildDir)" Condition="Exists('$(BuildDir)')" />
+	<Target Name="Clean" DependsOnTargets="GetProductVersion">
 		<RemoveDir Directories="$(PackageDir)" Condition="Exists('$(PackageDir)')" />
-		<MakeDir Directories="$(BuildDir)" />
-		<MakeDir Directories="$(PackageDir)" />
+    <RemoveDir Directories="$(BuildUmbDir)" Condition="Exists('$(BuildUmbDir)')" />
+    <RemoveDir Directories="$(BuildNuGetDir)" Condition="Exists('$(BuildNuGetDir)')" />    
+		<MakeDir Directories="$(BuildUmbDir)" />
     <MakeDir Directories="$(BuildNuGetDir)" />
+		<MakeDir Directories="$(PackageDir)" />
 	</Target>
 
     <!-- UPDATE PROJECT ASSEMBLEY VERSION -->
@@ -89,34 +91,34 @@
 
 	<!-- COMPILE -->
 	<Target Name="Compile" DependsOnTargets="UpdateAssemblyInfo">
-		<MSBuild Projects="$(CoreProjectDir)\Test.csproj" />
+		<MSBuild Projects="$(CoreProjectDir)\Test.csproj" Properties="Configuration=$(BuildConfig)"/>
 	</Target>
 
 	<!-- PREPARE FILES -->
-	<Target Name="PrepairFiles" DependsOnTargets="Compile">
+	<Target Name="PrepareFiles" DependsOnTargets="Compile">
 		<ItemGroup>
-			<BinFiles Include="$(CoreProjectDir)\Bin\Debug\Test.dll" />
+			<BinFiles Include="$(CoreProjectDir)\Bin\$(BuildConfig)\Test.dll" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\Package.xml" />
       <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
       <GruntProjectFiles Include="$(GruntProjectDir)\dist\**\*" />
     </ItemGroup>
-		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
-		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
+		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildUmbDir)\bin" />
+		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildUmbDir)" />
     <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net45" />
     <Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
     <Copy SourceFiles="@(GruntProjectFiles)"
-   DestinationFiles="@(GruntProjectFiles->'$(BuildDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+   DestinationFiles="@(GruntProjectFiles->'$(BuildUmbDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(GruntProjectFiles)"
    DestinationFiles="@(GruntProjectFiles->'$(BuildNuGetDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />    
   </Target>
 
   <!-- MANIFEST UMBRACO -->
-  <Target Name="ManifestUmbraco" DependsOnTargets="PrepairFiles">
+  <Target Name="ManifestUmbraco" DependsOnTargets="PrepareFiles">
     <ItemGroup>
-      <ManifestFiles Include="$(BuildDir)\**\*" Exclude="$(BuildDir)\Package.xml" />
+      <ManifestFiles Include="$(BuildUmbDir)\**\*" Exclude="$(BuildUmbDir)\Package.xml" />
     </ItemGroup>
-    <ManifestUpdate ManifestFile="$(BuildDir)\package.xml"
-			WorkingDirectory="$(BuildDir)"
+    <ManifestUpdate ManifestFile="$(BuildUmbDir)\package.xml"
+			WorkingDirectory="$(BuildUmbDir)"
 			MinimumRequiredUmbracoVersion="$(MinUmbracoVersion)"
       PackageName="$(PackageName)"
 			PackageVersion="$(ProductVersion)"
@@ -130,7 +132,7 @@
   </Target>
 
   <!-- MANIFEST FOR NUGET PACKAGE -->
-  <Target Name="ManifestNuGet" DependsOnTargets="PrepairFiles">
+  <Target Name="ManifestNuGet" DependsOnTargets="PrepareFiles">
     <ItemGroup>
       <ManifestFiles Include="$(BuildNuGetDir)\**\*" Exclude="$(BuildNuGetDir)\package.nuspec" />
     </ItemGroup>
@@ -158,11 +160,11 @@
   <!-- PACKAGE -->
   <Target Name="Package" DependsOnTargets="ManifestUmbraco; ManifestNuGet">
     <ItemGroup>
-      <PackageFiles Include="$(BuildDir)\**\*.*" />
+      <PackageFiles Include="$(BuildUmbDir)\**\*.*" />
     </ItemGroup>
 
-    <Package ManifestFile="$(BuildDir)\Package.xml"
-			WorkingDirectory="$(BuildDir)"
+    <Package ManifestFile="$(BuildUmbDir)\Package.xml"
+			WorkingDirectory="$(BuildUmbDir)"
 			OutputDirectory="$(PackageDir)"
 			Files="@(PackageFiles)" />
 
@@ -172,7 +174,7 @@
           Version="$(ProductVersion)"
           OutputDirectory="$(PackageDir)" />
 
-    <RemoveDir Directories="$(BuildDir)" Condition="Exists('$(BuildDir)')" />
+    <RemoveDir Directories="$(BuildUmbDir)" Condition="Exists('$(BuildUmbDir)')" />
     <RemoveDir Directories="$(BuildNuGetDir)" Condition="Exists('$(BuildNuGetDir)')" />
 
   </Target>
