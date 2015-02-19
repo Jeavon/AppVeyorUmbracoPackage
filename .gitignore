@@ -158,4 +158,4 @@ $RECYCLE.BIN/
 # Test
 # =========================
 Test/bin/*
-BuildPackage/Package/*
+BuildPackage/artifacts/*
