@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Test
+﻿namespace Test
 {
-    public class Class1
+    public static class Class1
     {
-
+        public static string AMethod()
+        {
+            var a = 1;
+            var d = 6 * 99;
+            return d.ToString();
+        }
     }
-
 }
