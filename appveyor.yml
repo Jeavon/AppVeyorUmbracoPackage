@@ -3,14 +3,15 @@ version: 1.0.10.{build}
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX will only be used for Release builds
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
+init:
+  - set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
+
 install:
   - cmd: npm install -g grunt-cli
-  - cmd: set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
-  - cmd: cd BuildPackage
-  - cmd: Build.bat
 
-# to disable automatic builds
-build: off
+build_script:
+  - cd BuildPackage
+  - Build.bat
 
 artifacts:
   - path: BuildPackage\artifacts\*.nupkg
