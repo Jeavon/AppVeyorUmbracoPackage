@@ -4,7 +4,7 @@ version: 1.1.0.{build}
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX will default to alpha if left empty and not a release build
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
 init:
-  - set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=
+  - set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=alpha
 
 install:
   - cmd: npm install -g grunt-cli
