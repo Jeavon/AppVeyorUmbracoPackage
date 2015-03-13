@@ -12,7 +12,7 @@
         }
 
         public static string BuildVersion = "1.0.0.14";
-        public static string BuildSuffix = "beta";
+        public static string BuildSuffix = "build";
         public static string Release = "false";
         public static string ProductVersion;
 
