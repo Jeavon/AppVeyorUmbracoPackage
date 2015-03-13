@@ -17,7 +17,7 @@ namespace Test
         public void AppVeyor()
         {
             Class1.TestAppVeyor();
-            Assert.AreEqual("1.0.0-build-000014", Class1.ProductVersion);
+            Assert.AreEqual("1.0.0-alpha-000014", Class1.ProductVersion);
         }
     }
 }

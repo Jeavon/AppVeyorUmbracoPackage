@@ -32,7 +32,7 @@
             }
             else if (string.IsNullOrEmpty(BuildSuffix) && Release == "false")
             {
-                ProductVersion = baseVersion + "-build-" + buildNumberWithZeros;
+                ProductVersion = baseVersion + "-alpha-" + buildNumberWithZeros;
             }
             else if (!string.IsNullOrEmpty(BuildSuffix) && Release == "true")
             {
