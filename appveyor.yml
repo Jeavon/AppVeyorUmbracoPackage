@@ -5,6 +5,7 @@ version: 1.1.2.{build}
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
 init:
   - set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=
+   - setx PATH "%PATH%;C:\Python34-x64\Scripts"
 
 install:
   - cmd: npm install -g grunt-cli
