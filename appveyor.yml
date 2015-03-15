@@ -8,6 +8,7 @@ init:
 
 install:
   - cmd: npm install -g grunt-cli
+  - cmd: pip install --upgrade bumpversion
 
 build_script:
   - cd BuildPackage
