@@ -1,8 +1,6 @@
-﻿namespace Test
+﻿namespace AppVeyourVersions
 {
-    using System.Globalization;
-
-    public static class Class1
+    public static class AppVeyourVersion
     {
         public static string AMethod()
         {
@@ -11,12 +9,9 @@
             return d.ToString();
         }
 
-        public static string BuildVersion = "1.0.0.14";
-        public static string BuildSuffix = "";
-        public static string Release = "false";
         public static string ProductVersion;
 
-        public static void TestAppVeyor()
+        public static void GetProductVersion(string BuildVersion, string BuildSuffix, string Release)
         {
             var pos = BuildVersion.LastIndexOf('.');
             var len = BuildVersion.Length - pos - 1;
@@ -26,7 +21,7 @@
 
             var baseVersion = BuildVersion.Substring(0, pos);
 
-            if (string.IsNullOrEmpty(BuildSuffix) && Release == "true")
+            if ((string.IsNullOrEmpty(BuildSuffix) || BuildSuffix == "rtm") && Release == "true")
             {
                 ProductVersion = baseVersion;
             }
@@ -38,9 +33,15 @@
             {
                 ProductVersion = baseVersion + "-" + BuildSuffix;
             }
-            else if (!string.IsNullOrEmpty(BuildSuffix) && Release == "false"){
+            else if (!string.IsNullOrEmpty(BuildSuffix) && BuildSuffix != "rtm" && Release == "false")
+            {
                 ProductVersion = baseVersion + "-" + BuildSuffix + "-" + buildNumberWithZeros;
-            }            
+            }
+            else
+            {
+                ProductVersion = "";
+            }
+       
         }
     }
 }
